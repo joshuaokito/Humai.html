@@ -3,144 +3,137 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GLORYHAVENSARL-Plateforme d'aide humanitaire 
-    évangélique  </title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="style.css">
+    <title>Invitation au Mariage</title>
+    <style>
+        /* Styles globaux */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        h1 {
+            color: #444;
+        }
+
+        input {
+            padding: 10px;
+            width: 300px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .invitation {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            display: none;
+            text-align: center;
+        }
+
+        .invitation img {
+            width: 200px;
+            margin-top: 15px;
+            border-radius: 10px;
+        }
+
+        .error {
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
-    <header class="bg-dark text-white py-4">
-        <div class="container">
-            <div class="scroll-text">
-                
-            </div>
-            <h1 class="text-center">GLORY-HAVEN S.A.R.L</h1>
-            <nav class="navbar navbar-expand-lg navbar-dark">
-                <a class="navbar-brand" href="#">Plateforme d'aide humanitaire <br> évangélique</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ml-auto">
-                        <li class="nav-item"><a class="nav-link" href="#accueil">Accueil</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#mission">Mission</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#objectifs">Objectifs</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#activites">Activités</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#valeurs">Valeurs</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#impact">Impact</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#conclusion">Conclusion</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
-                    </ul>
-                </div>
-            </nav>
-        </div>
-    </header>
+    <h1>l'Invité d'honneurs du Mariage 🎉</h1>
+    <p>Veuillez entrer votre nom pour recevoir votre invitation :</p>
+    <input type="text" id="nomInvite" placeholder="Entrez votre nom ici..." />
+    <button onclick="genererInvitation()">Générer l'invitation</button>
+    <div class="invitation" id="invitation"></div>
+    <div class="error" id="error"></div>
 
-    <main>
-        <section id="accueil" class="bg-light py-5">
-            <div class="container text-center">
-                <h2 class="mb-4">Bienvenue sur notre plateforme</h2>
-                <p class="lead">Découvrez nos services d'aide humanitaire et soutenez nos actions.</p>
-                <a href="#mission" class="btn btn-primary mt-3">En savoir plus sur notre mission</a>
-            </div>
-        </section>
+    <script>
+        // Liste des invités
+        const invites = [
+            "Pasteur Abel", "Couple maweja", "Couple ravina", "Couple graje", "Couple Sharonne", "Couple Julva",
+            "Couple Akubu", "Couple bula bula", "Couple papa Kevin", "Joël isoki", "Lina Akubu", "Crépine tshibola",
+            "Jefferson Kalala", "Emanuel Kazaka", "Myriam mvumi", "Papa estimé", "Lina kiminu", "Danielle bassanga",
+            "Judith", "Jérémy Muipatayi", "Isaac", "Claudia", "Déo", "Fady", "Sam", "Sylvia", "Da Jojo", "Safi Ak",
+            "Sacrée", "Olive", "Déborah", "Joël kumni", "Couple Claude NTAMBWE", "couple Patrick NTUMBA", 
+            "Couple Peter MBUYI", "Couple Freddy KANKU", "COUPLE CEDRIC TSHIKUMA", "COUPLE HONORÉ TSHITUKA",
+            "COUPLE JOE NGALAMULUME", "COUPLE DANIEL TSHIBANGU", "COUPLE POPOL MWAMBA", "MAMAN ADRIENNE",
+            "INVITES MAMAN", "TINA LOSA", "BETTY YOTA", "YVONNE KABUYA", "Pasteur Obed-David LUNGOYI", 
+            "COUPLE FREDDY KWILU", "COUPLE PEPE NSAMU", "COUPLE BENOIT MIBULUMUKINI", "COUPLE STEVE PANZA", 
+            "ROSAIRE KANKONDE", "MERVEILLE BUMBA", "ROHI KABANGO", "COUPLE CYNTHIA NGALAMULUME", "KATHYA MBELU",
+            "COUPLE JONATHAN ELOHO", "COUPLE FRANCKY KAMWENA", "COUPLE KAMWENA J.", "MEMINI KAKUDJI", 
+            "DEBORAH KIWELE", "COUPLE DIEUDONNÉ NSAMU", "COUPLE EBEN MINDANA", "COUPLE PASTEUR JEAN MENGI",
+            "COUPLE PASTEUR NORMAN MBINI", "COUPLE SIMPLICE KINZANZALA", "Rachel poké", "Andy kassongo", 
+            "Ghislain bassanga", "Vanessa Bayibo", "Pascaline Bukasa", "Ange", "Grâce et Bionick (couple)", 
+            "Couple glody mwaka", "Alex", "Binta dango", "Papa Hervé lukembo", "Shekinah KAMWANYA"
+        ];
 
-        <section id="mission" class="py-5">
-            <div class="container">
-                <h2 class="text-center mb-4">Mission</h2>
-                <p class="lead">GloryHavenSarl est une organisation non gouvernementale (ONG) humanitaire évangélique qui vise à promouvoir l'autonomisation des communautés locales, en particulier des femmes, des personnes vulnérables et des personnes handicapées, tout en luttant contre le tribalisme ethnique.</p>
-            </div>
-        </section>
+        // Fonction pour générer l'invitation
+        function genererInvitation() {
+            const nom = document.getElementById("nomInvite").value.trim();
+            const invitationDiv = document.getElementById("invitation");
+            const errorDiv = document.getElementById("error");
 
-        <section id="objectifs" class="bg-light py-5">
-            <div class="container">
-                <h2 class="text-center mb-4">Objectifs</h2>
-                <ul class="list-unstyled">
-                    <li><strong>Formation entrepreneuriale:</strong> Offrir des formations en création et gestion d'entreprises aux entrepreneurs locaux, en mettant l'accent sur les Activités Génératrices de Revenus (AGR) pour les femmes et les personnes vulnérables.</li>
-                    <li><strong>Soutien aux personnes handicapées:</strong> Fournir des ressources et des opportunités aux personnes handicapées pour leur permettre de s'intégrer pleinement à la société et de contribuer à l'économie.</li>
-                    <li><strong>Lutte contre le tribalisme:</strong> Sensibiliser aux dangers du tribalisme ethnique et promouvoir la cohésion sociale et le respect mutuel entre les communautés.</li>
-                    <li><strong>Plateforme d'emploi:</strong> Développer une plateforme d'emploi nationale et internationale pour connecter les demandeurs d'emploi qualifiés avec des opportunités d'emploi pertinentes.</li>
-                </ul>
-            </div>
-        </section>
+            // Réinitialiser les messages
+            invitationDiv.style.display = "none";
+            errorDiv.textContent = "";
 
-        <section id="activites" class="py-5">
-            <div class="container">
-                <h2 class="text-center mb-4">Activités</h2>
-                <ul class="list-unstyled">
-                    <li><strong>Ateliers de formation:</strong> Organiser des ateliers de formation pratiques sur la création et la gestion d'entreprises, en adaptant le contenu aux besoins spécifiques des participants.</li>
-                    <li><strong>Mentoring et coaching:</strong> Offrir un accompagnement personnalisé aux entrepreneurs en herbe et aux entreprises en démarrage, en leur fournissant des conseils et des ressources pour les aider à réussir.</li>
-                    <li><strong>Micro-crédit:</strong> Faciliter l'accès au micro-crédit pour les entrepreneurs locaux, en particulier les femmes et les personnes vulnérables.</li>
-                    <li><strong>Sensibilisation et plaidoyer:</strong> Organiser des campagnes de sensibilisation pour lutter contre le tribalisme ethnique et promouvoir la tolérance et le respect mutuel.</li>
-                    <li><strong>Partenariats stratégiques:</strong> Collaborer avec des organisations locales et internationales pour élargir la portée des programmes et des services de l'ONG.</li>
-                </ul>
-            </div>
-        </section>
+            // Normaliser le nom en minuscule et supprimer les accents
+            const nomNormalise = nom.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
 
-        <section id="valeurs" class="bg-light py-5">
-            <div class="container">
-                <h2 class="text-center mb-4">Valeurs fondamentales</h2>
-                <ul class="list-unstyled">
-                    <li><strong>Foi:</strong> Ancrer nos actions dans les principes bibliques d'amour, de compassion et de justice sociale.</li>
-                    <li><strong>Autonomisation:</strong> Donner aux individus les moyens de prendre en charge leur propre vie et de contribuer positivement à leur communauté.</li>
-                    <li><strong>Égalité des chances:</strong> Créer un environnement inclusif où tous les individus, quels que soient leurs origines ou leur condition, ont des opportunités égales de réussite.</li>
-                    <li><strong>Respect mutuel:</strong> Promouvoir la cohésion sociale et le respect mutuel entre les communautés, en luttant contre toutes les formes de discrimination.</li>
-                    <li><strong>Excellence:</strong> Maintenir les normes les plus élevées dans tous nos programmes et services.</li>
-                </ul>
-            </div>
-        </section>
+            // Vérifier si "Couple" est suivi d'un nom
+            if (nomNormalise.startsWith("couple") && nomNormalise.split(" ").length < 2) {
+                errorDiv.textContent = "⚠️ Désolé, un 'Couple' doit être suivi d'un nom.";
+                return;
+            }
 
-        <section id="impact" class="py-5">
-            <div class="container">
-                <h2 class="text-center mb-4">Impact attendu</h2>
-                <ul class="list-unstyled">
-                    <li>Réduire la pauvreté et améliorer les conditions de vie des personnes vulnérables.</li>
-                    <li>Stimuler la croissance économique locale en encourageant l'entrepreneuriat.</li>
-                    <li>Promouvoir l'inclusion sociale et la cohésion entre les communautés.</li>
-                    <li>Lutter contre le tribalisme ethnique et ses effets néfastes sur la société.</li>
-                </ul>
-            </div>
-        </section>
+            // Validation du nom par rapport à la liste (ignorer la casse et les accents)
+            const nomTrouve = invites.some(invite => invite.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim() === nomNormalise);
 
-        <section id="conclusion" class="bg-light py-5">
-            <div class="container">
-                <h2 class="text-center mb-4">Conclusion</h2>
-                <p class="lead">GloryHavenSarl s'engage à être un catalyseur de changement positif dans les communautés locales, en promouvant l'autonomisation, l'égalité des chances et le respect mutuel.</p>
-                <p class="lead">En combinant des initiatives de développement économique avec des efforts de lutte contre le tribalisme, l'ONG vise à créer un avenir plus juste et plus prospère pour tous.</p>
-            </div>
-        </section>
-
-        <section id="contact" class="py-5">
-            <div class="container">
-                <h2 class="text-center mb-4">Contactez-nous</h2>
-                <form action="#" class="mx-auto" style="max-width: 600px;">
-                    <div class="form-group">
-                        <label for="nom">Nom:</label>
-                        <input type="text" id="nom" name="nom" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email:</label>
-                        <input type="email" id="email" name="email" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="message">Message:</label>
-                        <textarea id="message" name="message" class="form-control" rows="5" required></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-block">Envoyer</button>
-                </form>
-            </div>
-        </section>
-    </main>
-
-    <footer class="bg-dark text-white py-4">
-        <div class="container text-center">
-            <p>&copy; 2024 GloryHavenSarl. Tous droits réservés.</p>
-        </div>
-    </footer>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="script.js"></script>
+            if (nomTrouve) {
+                invitationDiv.innerHTML = `
+                    <h2>🎊 Félicitations ! 🎊</h2>
+                    <p>Cher(e) <strong>${nom}</strong>,</p>
+                    <p>Vous êtes cordialement invité(e) au mariage de <strong>christian kabuya et lydia nzinga</strong>.</p>
+                    <p>📅 <strong>Date :</strong> le 28 dec 2024</p>
+                    <p>📍 <strong>Adresse :</strong> Église missionnaire C.B.CO SIMS Réf/ Symphonie des arts/Kintambo magasin.</p>
+                    <p>⏰ <strong>Heure :</strong> 12h00</p>
+                    <img src="https://i.postimg.cc/C1zYrKWG/IMG-20241217-WA0100.jpg" alt="Invitation de Mariage" />
+                    <p>Nous avons hâte de célébrer ce moment exceptionnel avec vous !</p>
+                `;
+                invitationDiv.style.display = "block";
+            } else {
+                errorDiv.textContent = "⚠️ Désolé, votre nom ne figure pas dans la liste des invités.";
+            }
+        }
+    </script>
 </body>
 </html>
